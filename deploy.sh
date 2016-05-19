@@ -37,7 +37,7 @@ doCompile
 # Now let's go have some fun with the cloned repo
 cd _site
 git config user.name "Travis CI"
-git config user.email ""
+git config user.email '<>'
 
 # If there are no changes to the compiled out (e.g. this is a README update) then just bail.
 if git diff --quiet ; then
