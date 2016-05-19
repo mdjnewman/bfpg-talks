@@ -1,13 +1,10 @@
-# Copy these contents into the root directory of your Github project in a file
-# named .travis.yml
-
 # Use new container infrastructure to enable caching
 sudo: false
 
-# Choose a lightweight base image; we provide our own build tools.
+# Choose a lightweight base image; we provide our own build tools
 language: c
 
-# Caching so the next build will be fast too.
+# Caching so the next build will be fast too
 cache:
   directories:
   - $HOME/.ghc
@@ -24,12 +21,11 @@ addons:
 
 before_install:
 - |
-  # Download and unpack the stack executable
+  # Download and unpack the stack executable & setup Hackage mirror
   export PATH=:$HOME/.local/bin:$HOME/.cabal/bin:$PATH
   mkdir -p ~/.local/bin
   travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
 
-  # Use the more reliable S3 mirror of Hackage
   mkdir -p $HOME/.cabal
   echo 'remote-repo: hackage.haskell.org:http://hackage.fpcomplete.com/' > $HOME/.cabal/config
   echo 'remote-repo-cache: $HOME/.cabal/packages' >> $HOME/.cabal/config
