@@ -14,30 +14,19 @@ cache:
   - $HOME/.cabal
   - $HOME/.stack
 
-# The different configurations we want to test. We have BUILD=cabal which uses
-# cabal-install, and BUILD=stack which uses Stack. More documentation on each
-# of those below.
-#
-# We set the compiler values here to tell Travis to use a different
-# cache file per set of arguments.
-#
-# If you need to have different apt packages for each combination in the
-# matrix, you can use a line such as:
-#     addons: {apt: {packages: [libfcgi-dev,libgmp-dev]}}
-matrix:
-  include:
-  - env: BUILD=stack ARGS="--resolver lts-5"
-    compiler: ": #stack 7.10.3"
-    addons: {apt: {packages: [ghc-7.10.3], sources: [hvr-ghc]}}
+# Dependencies
+addons:
+  apt:
+    packages:
+    - ghc-7.10.3
+    sources:
+    - hvr-ghc
 
 before_install:
-# Using compiler above sets CC to an invalid value, so unset it
-- unset CC
-
-# Download and unpack the stack executable
-- export PATH=:$HOME/.local/bin:$HOME/.cabal/bin:$PATH
-- mkdir -p ~/.local/bin
 - |
+  # Download and unpack the stack executable
+  export PATH=:$HOME/.local/bin:$HOME/.cabal/bin:$PATH
+  mkdir -p ~/.local/bin
   travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
 
   # Use the more reliable S3 mirror of Hackage
@@ -45,11 +34,7 @@ before_install:
   echo 'remote-repo: hackage.haskell.org:http://hackage.fpcomplete.com/' > $HOME/.cabal/config
   echo 'remote-repo-cache: $HOME/.cabal/packages' >> $HOME/.cabal/config
 
-# Get the list of packages from the stack.yaml file
-- PACKAGES=$(stack --install-ghc query locals | grep '^ *path' | sed 's@^ *path:@@')
-
 install:
-- echo "$(ghc --version) [$(ghc --print-project-git-commit-id 2> /dev/null || echo '?')]"
 - if [ -f configure.ac ]; then autoreconf -i; fi
 - |
   set -ex
