@@ -36,6 +36,8 @@ doCompile
 
 # Now let's go have some fun with the cloned repo
 cd _site
+git config user.name "Travis CI"
+git config user.email ""
 
 # If there are no changes to the compiled out (e.g. this is a README update) then just bail.
 if git diff --quiet ; then
@@ -46,7 +48,7 @@ fi
 # Commit the "changes", i.e. the new version.
 # The delta will show diffs between new and old versions.
 git add --all .
-git commit --author='Travis CI <>' -m "Deploy to GitHub Pages: ${SHA}"
+git commit -m "Deploy to GitHub Pages: ${SHA}"
 
 openssl aes-256-cbc -K $encrypted_bf200f1b2bff_key -iv $encrypted_bf200f1b2bff_iv -in ../deploy_key.enc -out deploy_key -d
 chmod 600 deploy_key
