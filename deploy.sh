@@ -1,5 +1,7 @@
 #!/bin/bash
-set -e # Exit with nonzero exit code if anything fails
+set -ex
+
+echo BASH_VERSION is $BASH_VERSION
 
 SOURCE_BRANCH="master"
 TARGET_BRANCH="gh-pages"
@@ -56,4 +58,4 @@ eval `ssh-agent -s`
 ssh-add deploy_key
 
 # Now that we're all set up, we can push.
-git push $SSH_REPO $TARGET_BRANCH
+git push -v $SSH_REPO $TARGET_BRANCH
