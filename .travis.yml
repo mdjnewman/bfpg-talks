@@ -56,9 +56,8 @@ install:
   stack --no-terminal --install-ghc $ARGS test --bench --only-dependencies
   set +ex
 
-script:
-- |
-  set -ex
-  stack --no-terminal build
-  stack --no-terminal exec site build
-  set +ex
+script: bash ./deploy.sh
+
+env:
+  global:
+    COMMIT_AUTHOR_EMAIL: "mdjnewman@gmail.com"
