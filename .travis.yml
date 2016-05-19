@@ -34,15 +34,6 @@ before_install:
   echo 'remote-repo: hackage.haskell.org:http://hackage.fpcomplete.com/' > $HOME/.cabal/config
   echo 'remote-repo-cache: $HOME/.cabal/packages' >> $HOME/.cabal/config
 
-install:
-- if [ -f configure.ac ]; then autoreconf -i; fi
-- |
-  set -ex
-  stack --no-terminal --install-ghc $ARGS test --bench --only-dependencies
-  set +ex
+install: stack --no-terminal --install-ghc $ARGS test --bench --only-dependencies
 
 script: bash ./deploy.sh
-
-env:
-  global:
-    COMMIT_AUTHOR_EMAIL: "mdjnewman@gmail.com"
